@@ -4,13 +4,15 @@ pipeline {
     stage ("Prompt for input") {
       steps {
         script {
-          env.USERNAME = input message: 'Please enter the username',
+          env.USERNAME = input message: 'Please enter version',
                              parameters: [string(defaultValue: '',
                                           description: '',
-                                          name: 'Username')]
+                                          name: 'version')]
         }
-        echo "Username: ${env.USERNAME}"
       }
     }
+    stage ("check if branch exist")
+      steps {
+        sh './if_exist.sh ${env.USERNAME}'
   }
 }
