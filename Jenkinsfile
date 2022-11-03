@@ -2,6 +2,7 @@ pipeline {
   agent any
   enviroment {
       BRANCH = "realese/"
+  }
   stages {
     stage ("Prompt for input") {
       steps {
