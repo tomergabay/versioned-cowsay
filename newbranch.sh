@@ -5,6 +5,7 @@ then
   echo "not for realese" > v.txt
   echo $1 >> v.txt
   git commit -am"$1"
+  git checkout main
 else 
   git checkout $1
 fi
