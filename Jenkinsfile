@@ -15,5 +15,6 @@ pipeline {
       steps {
         sh './if_exist.sh RELEASE\${env.USERNAME}'
       }
+    }
   }
 }
