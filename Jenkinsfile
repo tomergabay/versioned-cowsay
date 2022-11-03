@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-      BRANCH = ""
+      
   }
   stages {
     stage ("Prompt for input") {
