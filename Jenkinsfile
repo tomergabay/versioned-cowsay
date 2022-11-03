@@ -21,5 +21,12 @@ pipeline {
 	sh "./newbranch.sh ${env.BRANCH}"
       }
     }
+  } 
+  post {
+   always {
+      sh 'docker rm -f /cowsay_test'
+      cleanWs()
+    }
   }
+
 }
