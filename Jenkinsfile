@@ -17,8 +17,8 @@ pipeline {
     }
     stage ("check if branch exist") {
       steps {
-        sh "./if_exist.sh ${env.BRANCH} "
-	env.ifexist = sh "$?"
+        sh "./if_exist.sh ${env.BRANCH}"
+	sh "./newbranch.sh ${env.BRANCH}"
       }
     }
   }
