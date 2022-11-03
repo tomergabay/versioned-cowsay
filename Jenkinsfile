@@ -1,16 +1,17 @@
 pipeline {
   agent any
   environment {
-      BRANCH = "realese/"
+      BRANCH = ""
   }
   stages {
     stage ("Prompt for input") {
       steps {
         script {
-          env.BRANCH += input message: 'Please enter version',
+          env.BRANCH = input message: 'Please enter version',
                              parameters: [string(defaultValue: '',
                                           description: '',
                                           name: 'version')]
+          env.BRANCH = "realese/" + "${env.BRANCH}"
         }
       }
     }
