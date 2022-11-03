@@ -16,7 +16,7 @@ pipeline {
     }
     stage ("check if branch exist") {
       steps {
-        echo ${env.BRANCH}
+        echo "${env.BRANCH}"
       }
     }
   }
