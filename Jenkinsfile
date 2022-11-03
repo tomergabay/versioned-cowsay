@@ -11,7 +11,7 @@ pipeline {
         }
       }
     }
-    stage ("check if branch exist")
+    stage ("check if branch exist") {
       steps {
         sh './if_exist.sh RELEASE\${env.USERNAME}'
       }
