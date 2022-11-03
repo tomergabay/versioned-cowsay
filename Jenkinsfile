@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-      
+      ECR = "Fefd"
   }
   stages {
     stage ("Prompt for input") {
