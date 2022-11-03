@@ -1,10 +1,11 @@
 #!/bin/bash
 
-local branch=${1}
-local existed_in_remote=$(git ls-remote --heads origin ${branch})
+branch=$1
+existed_in_remote=$(git branch --list | grep -c ${branch})
 
-if [[ -z ${existed_in_remote} ]]; then
-    return "not exist"
+if [[ ${existed_in_remote} -gt 0 ]]; then
+    echo "exist"
 else
-    return "exist"
+    echo "not exist"
 fi
+
