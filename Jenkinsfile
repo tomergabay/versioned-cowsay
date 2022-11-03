@@ -16,7 +16,7 @@ pipeline {
     }
     stage ("check if branch exist") {
       steps {
-        sh 'git ls-remote --heads origin ${env.BRANCH} | grep -c ${env.BRANCH}'
+        echo ${env.BRANCH}
       }
     }
   }
