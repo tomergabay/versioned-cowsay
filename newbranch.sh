@@ -1,5 +1,5 @@
 #!/bin/bash 
-git pull
+
 if [ $? -eq 0 ] 
 then 
   git checkout -b $1
