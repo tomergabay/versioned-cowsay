@@ -1,32 +1,32 @@
 pipeline {
   agent any
-  environment {
-      ECR = "Fefd"
+  parameters {
+    string defaultValue: '0', description: 'Release version', name: 'version'
   }
+
   stages {
-    stage ("Prompt for input") {
+
+    stage ("STAGE 1 check if branch exist") {
       steps {
         script {
-          env.BRANCH = input message: 'Please enter version',
-                             parameters: [string(defaultValue: '',
-                                          description: '',
-                                          name: 'version')]
-          env.BRANCH = "realese/" + "${env.BRANCH}"
+         try {
+           sh "git checkout remotes/origin/release/${version}"
+           sh "git checkout -b release/${version}"
+         } catch {Exception e} {
+           sh "git checkout main"
+           sh "git checkout -b release/${version}"
+           sh "echo ${version} > v.txt"
+           sh "echo "NOT FOR RELEASE" >> v.txt"
+           sh "git commit -am 'Auatomatic commit ${version}'"
+           sh "git push origin release/${version}"
+
+         }
         }
       }
     }
-    stage ("check if branch exist") {
+    stage ("STAGE 2 pull resources")
       steps {
-        sh "./if_exist.sh ${env.BRANCH}"
-	      sh "./newbranch.sh ${env.BRANCH}"
+        
       }
-    }
-  } 
-  post {
-   always {
-      sh 'docker rm -f /cowsay_test'
-      cleanWs()
-    }
   }
-
 }
