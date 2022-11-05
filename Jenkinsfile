@@ -1,33 +1,45 @@
 pipeline {
-    agent any
+  agent any
 
-    parameters {
-        string defaultValue: '0' , description: 'Release version' , name: 'version'
-    }
-    stages {
+  parameters {
+    string defaultValue: '0', description: 'Release Version', name: 'version'
+  }
 
-        stage ('something') {
-            steps {
-                script {
-                    try {
-                        sh "git checkout remotes/origin/release/${version}"
-                        sh "git checkout -b release/${version}"
-                        sh "git config --global user.email 'Levmeshorer16@gmail.com'"
-                        sh "git config --global user.name 'Lev - Jenkins container' "
-                        echo "HERE"
-                    }   
-                    catch (Exception e) {
-                        sh "git checkout master"
-                        sh "git checkout -b release/${version}"
-                        sh "echo ${version} > v.txt"
-                        sh "echo NOT FOR RELEASE >> v.txt"
-                        sh "git commit -am 'Automated commit' ${version}"
-                        sh "git push origin release/${version}"
+  stages {
+    stage('STAGE 1 check if branch exists') {
+      steps {
+        script {
+          try {
+            sh "git config --global user.email 'ronsh0111@gmail.com'"
+            sh "git config --global user.name 'Ron Sharabi (EC2 JENKINS)'"
 
-                    }
-                }
-
-            }
+            sh "git checkout remotes/origin/release/${version}"
+            sh "git checkout release/${version}"
+            sh "git pull origin release/${version}"
+            echo '~~~~~~~~~ BRANCH EXISTS - checkout & pull ~~~~~~~~~'
+          } catch (Exception e) {
+            sh 'git checkout master'
+            sh "git checkout -b release/${version}"
+            sh "echo ${version} > v.txt"
+            sh "echo 'NOT FOR RELEASE' >> v.txt"
+            sh "git commit -am 'Automated commit ${version}'"
+            sh "git push origin release/${version}"
+            echo '~~~~~~~~~ BRANCH NOT EXISTS - created branch & pushed ~~~~~~~~~'
+          }
         }
+      }
     }
+    stage ('STAGE 2 ') {
+      steps {
+        echo 'stage 2'
+      }
+    }
+
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
 }
