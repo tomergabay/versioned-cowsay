@@ -10,7 +10,7 @@ pipeline {
       steps {
         script {
           try {
-            sh "git config --global user.email 'tomeriko01012001@gmail.com@gmail.com'"
+            sh "git config --global user.email 'tomeriko01012001@gmail.com'"
             sh "git config --global user.name 'tomer gabay (EC2 JENKINS)'"
 
             sh "git checkout remotes/origin/release/${version}"
@@ -29,16 +29,45 @@ pipeline {
         }
       }
     }
-    stage ('STAGE 2 ') {
+    stage ('STAGE 2 find latest tag') {
       steps {
-        echo 'stage 2'
+        sh 'git fetch --tags'
+
+        script {
+          try {
+            // new_tag = Integer.parseInt( sh(script: "git tag | grep ${version} | sort --version-sort | tail -1 | cut -d '.' -f 3", returnStdout: true).trim() )
+            new_tag = Integer.parseInt(sh(script: "git tag | grep ${version} | sort --version-sort | tail -1 | cut -d '.' -f 3", returnStdout: true).trim())
+            echo "${new_tag}"
+            new_tag += 1
+          } catch (Exception e) {
+            new_tag = 0
+          }
+          new_version = "${version}.${new_tag}"
+        }
       }
     }
 
+    stage ('STAGE 3 build & run') {
+      steps {
+        sh "docker build -t ron_cowsay:${new_version} ."
+        sh "docker run --name app --network project_lab_net -p 4001:8080 -d ron_cowsay:${new_version}"
+      }
+    }
+
+    stage ('STAGE 4 Tests') {
+      steps {
+        sh 'wget --tries=10 --waitretry=5 --retry-connrefused -O- app:8080'
+      }
+    }
+
+    // stage ('STAGE 5 Release (push to ECR)') {
+
+    // }
   }
 
   post {
     always {
+      sh 'docker rm -f app'
       cleanWs()
     }
   }
