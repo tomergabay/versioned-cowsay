@@ -12,6 +12,7 @@ pipeline {
          try {
            sh "git checkout remotes/origin/release/${version}"
            sh "git checkout -b release/${version}"
+	   sh "git pull origin release/${version}"
          } catch {Exception e} {
            sh "git checkout main"
            sh "git checkout -b release/${version}"
@@ -26,7 +27,7 @@ pipeline {
     }
     stage ("STAGE 2 pull resources")
       steps {
-        
+        echo "finealright"
       }
   }
 }
