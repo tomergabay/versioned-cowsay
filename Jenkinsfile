@@ -68,7 +68,7 @@ pipeline {
 
   post {
     always {
-      sh 'docker rm -f app'
+      sh 'docker rm -f /app'
       cleanWs()
     }
   }
