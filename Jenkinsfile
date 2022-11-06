@@ -49,8 +49,8 @@ pipeline {
 
     stage ('STAGE 3 build & run') {
       steps {
-        sh "docker build -t ron_cowsay:${new_version} ."
-        sh "docker run --name app --network project_lab_net -p 4001:8080 -d ron_cowsay:${new_version}"
+        sh "docker build -t tomer_cowsay:${new_version} ."
+        sh "docker run --name app --network ubuntu_cowsay -p 4001:8080 -d tomer_cowsay:${new_version}"
       }
     }
 
