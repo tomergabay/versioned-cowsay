@@ -56,7 +56,8 @@ pipeline {
 
     stage ('STAGE 4 Tests') {
       steps {
-        sh 'wget --tries=10 --waitretry=5 --retry-connrefused -O- app:8080'
+         sh 'sleep 20'
+	 sh 'curl app:8080'
       }
     }
 
