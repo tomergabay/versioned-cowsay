@@ -14,7 +14,7 @@ pipeline {
             sh "git config --global user.name 'tomer gabay (EC2 JENKINS)'"
 
             sh "git checkout remotes/origin/release/${version}"
-            sh "git checkout release/${version}"
+            sh "git checkout -b release/${version}"
             sh "git pull origin release/${version}"
             echo '~~~~~~~~~ BRANCH EXISTS - checkout & pull ~~~~~~~~~'
           } catch (Exception e) {
